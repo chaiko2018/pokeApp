@@ -32,6 +32,15 @@ const GET_POKEMONS = gql`
   }
 `;
 
+interface getPokesInterface {
+  id: number;
+  number: string;
+  name: string;
+  maxHP: number;
+  types: [string];
+  image: string;
+}
+
 const GetPokemon = (name: any) => {
   const { loading, error, data } = useQuery(GET_POKEMON, {
     variables: name,
@@ -57,14 +66,14 @@ const GetPokes = (first: any) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  return data.pokemons.map((poke: any) => (
+  return data.pokemons.map((poke: getPokesInterface) => (
     <div key={poke.id}>
       <p>NUMBER: {poke.number}</p>
       <p>NAME: {poke.name}</p>
       <p>MAXHP: {poke.maxHP}</p>
       <ul>
         {poke.types.map((type: any) => (
-          <li>{type}</li>
+          <li key={type}>{type}</li>
         ))}
       </ul>
       <img src={poke.image} alt="" />
