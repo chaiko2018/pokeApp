@@ -8,78 +8,12 @@ import {
   gql,
   useQuery,
 } from "@apollo/client";
-
-const GET_POKEMON = gql`
-  query getPoke($name: String!) {
-    pokemon(name: $name) {
-      id
-      number
-      name
-    }
-  }
-`;
-
-const GET_POKEMONS = gql`
-  query getPokes($first: Int!) {
-    pokemons(first: $first) {
-      id
-      number
-      name
-      maxHP
-      types
-      image
-    }
-  }
-`;
-
-interface getPokesInterface {
-  id: number;
-  number: string;
-  name: string;
-  maxHP: number;
-  types: [string];
-  image: string;
-}
-
-const GetPokemon = (name: any) => {
-  const { loading, error, data } = useQuery(GET_POKEMON, {
-    variables: name,
-  });
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
-  return (
-    <div key={data.pokemon.id}>
-      <p>ID: {data.pokemon.id}</p>
-      <p>NUMBER: {data.pokemon.number}</p>
-      <p>NAME: {data.pokemon.name}</p>
-    </div>
-  );
-};
-
-const GetPokes = (first: any) => {
-  const { loading, error, data } = useQuery(GET_POKEMONS, {
-    variables: first,
-  });
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
-  return data.pokemons.map((poke: getPokesInterface) => (
-    <div key={poke.id}>
-      <p>NUMBER: {poke.number}</p>
-      <p>NAME: {poke.name}</p>
-      <p>MAXHP: {poke.maxHP}</p>
-      <ul>
-        {poke.types.map((type: any) => (
-          <li key={type}>{type}</li>
-        ))}
-      </ul>
-      <img src={poke.image} alt="" />
-    </div>
-  ));
-};
+import { BrowserRouter, Route } from "react-router-dom";
+import Navbar from "./components/navbar";
+import Home from "./components/home";
+import About from "./components/about";
+import GetPoke from "./components/getpoke";
+import Chat from "./components/chat";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -89,17 +23,17 @@ const client = new ApolloClient({
 });
 
 function App() {
-  const pokename = "Pikachu";
-  const firstNum = 9;
-
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <p>GetPokemon</p>
-        <GetPokemon name={pokename} />
-        <p>GetPokes</p>
-        <GetPokes first={firstNum} />
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Navbar />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/getpoke" component={GetPoke} />
+          <Route exact path="/chat" component={Chat} />
+        </div>
+      </BrowserRouter>
     </ApolloProvider>
   );
 }
