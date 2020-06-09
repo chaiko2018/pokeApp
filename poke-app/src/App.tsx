@@ -5,8 +5,6 @@ import {
   ApolloClient,
   InMemoryCache,
   HttpLink,
-  gql,
-  useQuery,
 } from "@apollo/client";
 import { BrowserRouter, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
