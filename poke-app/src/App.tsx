@@ -28,7 +28,7 @@ function App() {
           <Navbar />
           <Route exact path="/" component={Home} />
           <Route exact path="/about" component={About} />
-          <Route exact path="/getpoke" component={GetPoke} />
+          <Route exact path="/pokesearch" component={GetPoke} />
           <Route exact path="/chat" component={Chat} />
         </div>
       </BrowserRouter>

@@ -47,7 +47,7 @@ const GetPokes = (first: any) => {
 };
 
 export default function Home() {
-  const firstNum = 9;
+  const firstNum = 151;
   return (
     <div>
       <GetPokes first={firstNum} />
