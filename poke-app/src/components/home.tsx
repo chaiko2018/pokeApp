@@ -41,7 +41,7 @@ const GetPokes = (first: any) => {
           <li key={type}>{type}</li>
         ))}
       </ul>
-      <img src={poke.image} alt="" />
+      <img src={poke.image} alt="poke image" />
     </div>
   ));
 };
