@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require("apollo-server");
+import { ApolloServer, gql } from "apollo-server";
 
 const typeDefs = gql`
   type Book {
@@ -17,7 +17,7 @@ const typeDefs = gql`
 
   type Query {
     books: [Book]
-    getPoke: Pokemon
+    getPoke(name: String): Pokemon
     getPokes: [Pokemon]
   }
 `;
@@ -36,6 +36,9 @@ const books = [
 const resolvers = {
   Query: {
     books: () => books,
+    // TODO: Use 'Apollo Federation' or 'Schema Stitching'
+    getPoke: (_parent, args) => {},
+    getPokes: () => {},
   },
 };
 
