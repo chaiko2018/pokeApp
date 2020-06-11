@@ -1,4 +1,4 @@
-import { ApolloServer, gql } from "apollo-server";
+const { ApolloServer, gql } = require("apollo-server");
 
 const typeDefs = gql`
   type Book {
@@ -15,10 +15,16 @@ const typeDefs = gql`
     image: String
   }
 
+  type Todo {
+    title: String
+    doing: Boolean
+  }
+
   type Query {
     books: [Book]
     getPoke(name: String): Pokemon
     getPokes: [Pokemon]
+    getTodos: [Todo]
   }
 `;
 
@@ -33,12 +39,24 @@ const books = [
   },
 ];
 
+const todos = [
+  {
+    title: "todo_sample",
+    doing: false,
+  },
+  {
+    title: "todo_sample2",
+    doing: true,
+  },
+];
+
 const resolvers = {
   Query: {
     books: () => books,
     // TODO: Use 'Apollo Federation' or 'Schema Stitching'
     getPoke: (_parent, args) => {},
     getPokes: () => {},
+    getTodos: () => todos, // TODO: to link databases system
   },
 };
 
