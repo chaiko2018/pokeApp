@@ -11,12 +11,13 @@ import Navbar from "./components/navbar";
 import Home from "./components/home";
 import About from "./components/about";
 import GetPoke from "./components/getpoke";
-import Chat from "./components/chat";
+import Todo from "./components/todo";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "https://graphql-pokemon.now.sh/",
+    uri: "http://localhost:4000/",
+    // uri: "https://graphql-pokemon.now.sh/",
   }),
 });
 
@@ -29,7 +30,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/about" component={About} />
           <Route exact path="/pokesearch" component={GetPoke} />
-          <Route exact path="/chat" component={Chat} />
+          <Route exact path="/todo" component={Todo} />
         </div>
       </BrowserRouter>
     </ApolloProvider>

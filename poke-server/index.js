@@ -24,9 +24,45 @@ const typeDefs = gql`
     books: [Book]
     getPoke(name: String): Pokemon
     getPokes: [Pokemon]
-    getTodos: [Todo]
+    todos: [Todo]
   }
 `;
+
+// temp use apollo-server and grpc
+/*
+const typeDefs = gql`
+  type Greeting {
+    id: Int!
+    message: String!
+  }
+
+  type Query {
+    greeting(id: Int!) Greeting
+    greetings: [Greeting!]!
+  }
+
+  type Mutation {
+    greeting(message: String!): Greeting!
+  }
+`;
+
+const resolvers = {
+  Query: {
+    greeting: async (_source, { id }) => {
+      const result = await GetGreeting({ id }, (err, result) => {
+        return result
+      })
+      if (!result.hasOwnProperty("greeting")) {
+        return undefined
+      }
+    }
+    greetings:
+  },
+  Mutation: {
+    greeting:
+  }
+}
+*/
 
 const books = [
   {
@@ -56,7 +92,7 @@ const resolvers = {
     // TODO: Use 'Apollo Federation' or 'Schema Stitching'
     getPoke: (_parent, args) => {},
     getPokes: () => {},
-    getTodos: () => todos, // TODO: to link databases system
+    todos: () => todos, // TODO: to link databases system
   },
 };
 

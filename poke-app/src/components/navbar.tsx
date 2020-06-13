@@ -9,7 +9,7 @@ export default function Navbar() {
       <Link to="/">Home</Link>
       <Link to="/about">About</Link>
       <Link to="/pokesearch">PokeSearch</Link>
-      <Link to="/chat">Chat</Link>
+      <Link to="/todo">Chat</Link>
     </div>
   );
 }

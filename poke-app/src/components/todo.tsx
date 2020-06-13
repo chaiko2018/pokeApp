@@ -1,5 +1,15 @@
 import React, { useState, ChangeEvent } from "react";
 import { List, Checkbox, ListItem, ListItemText } from "@material-ui/core";
+import { useQuery, gql } from "@apollo/client";
+
+const GET_TODOS = gql`
+  query GetTodos {
+    todos {
+      title
+      doing
+    }
+  }
+`;
 
 const INITIAL_TODO = {
   title: "Sample Todo",
@@ -11,9 +21,14 @@ interface todoStruct {
   doing: boolean;
 }
 
-export default function Chat() {
+export default function Todo() {
   const [todos, setTodos] = useState([INITIAL_TODO]);
   const [todoTitle, setTodoTitle] = useState("");
+
+  const { loading, error, data } = useQuery(GET_TODOS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
 
   const handleTitleChanges = (e: ChangeEvent<HTMLInputElement>) => {
     setTodoTitle(e.target.value);
@@ -43,8 +58,9 @@ export default function Chat() {
   };
 
   // TODO: Set delete button
-  // TODO: Start chat apollo-client and apollo-server.
-  // TODO: Start apollo-server wrapping pokeAPI and chatAPI.
+  // TODO: Start todo apollo-client and apollo-server.
+  // TODO: Start apollo-server wrapping pokeAPI and todoAPI.
+  // todoAPI made by golang and grpc
 
   return (
     <div>
@@ -53,13 +69,13 @@ export default function Chat() {
         Add Todo
       </button>
       <List component="ul">
-        {todos.map((todo: any) => (
-          <ListItem key={todo.title} component="li">
+        {data.todos.map((apollotodo: any) => (
+          <ListItem key={apollotodo.title} component="li">
             <Checkbox
-              checked={todo.doing}
-              onChange={() => handleCheckboxChanges(todo)}
+              checked={apollotodo.doing}
+              onChange={() => handleCheckboxChanges(apollotodo)}
             />
-            <ListItemText>{todo.title}</ListItemText>
+            <ListItemText>{apollotodo.title}</ListItemText>
           </ListItem>
         ))}
       </List>
