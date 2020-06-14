@@ -6,6 +6,7 @@ import (
 	"net"
 	"google.golang.org/grpc"
 	"context"
+	"database/sql"
 	gtodo "../proto"
 )
 
@@ -16,9 +17,8 @@ func (s *server) Hello() {
 }
 
 
-
+// TODO: use DB
 func (s *server) GetTodo(ctx context.Context, req *gtodo.GetTodoRequest) (*gtodo.GetTodoResponse, error) {
-
 	todo := &gtodo.Todo{
 		Title: "grpc_get_title",
 		Doing: true,
@@ -38,15 +38,33 @@ func (s *server) CreateTodo(ctx context.Context, req *gtodo.CreateTodoRequest) (
 }
 
 func (s *server) ListTodos(ctx context.Context, req *gtodo.ListTodosRequest) (*gtodo.ListTodosResponse, error) {
-	todos := []*gtodo.Todo{
-		{
-			Title: "grpc_list_title_1",
-			Doing: false,
-		},
-		{
-			Title: "grpc_list_title_2",
-			Doing: true,
-		},
+	conn, err := sql.Open("mysql", "username:@tcp(db:3306)/DBname")
+	if err != nil {
+		log.Fatal(err)
+	}
+	rows, err := conn.Query("SELECT title, doing FROM todos")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	todos := []*gtodo.Todo{}
+
+	for rows.Next() {
+		var title string
+		var doing	bool
+
+		err = rows.Scan(&title, &doing)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		todo := &gtodo.Todo{
+			Title: title,
+			Doing: doing,
+		}
+
+		todos = append(todos, todo)
 	}
 
 	res := &gtodo.ListTodosResponse{
