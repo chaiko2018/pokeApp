@@ -16,6 +16,20 @@ func (s *server) Hello() {
 	fmt.Println("test")
 }
 
+type SqlHandler struct {
+	Conn	*sql.DB
+}
+
+func NewSqlHandler() *SqlHandler {
+	conn, err := sql.Open("mysql", "username:@tcp(db:3306)/DBname")
+	if err != nil {
+		log.Fatal(err)
+	}
+	sqlHandler := new(SqlHandler)
+	sqlHandler.Conn = conn
+	return sqlHandler
+}
+
 
 // TODO: use DB
 func (s *server) GetTodo(ctx context.Context, req *gtodo.GetTodoRequest) (*gtodo.GetTodoResponse, error) {
@@ -38,11 +52,8 @@ func (s *server) CreateTodo(ctx context.Context, req *gtodo.CreateTodoRequest) (
 }
 
 func (s *server) ListTodos(ctx context.Context, req *gtodo.ListTodosRequest) (*gtodo.ListTodosResponse, error) {
-	conn, err := sql.Open("mysql", "username:@tcp(db:3306)/DBname")
-	if err != nil {
-		log.Fatal(err)
-	}
-	rows, err := conn.Query("SELECT title, doing FROM todos")
+	sqlhandler := NewSqlHandler()
+	rows, err := sqlhandler.Conn.Query("SELECT title, doing FROM todos")
 	if err != nil {
 		log.Fatal(err)
 	}
