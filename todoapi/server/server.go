@@ -21,7 +21,7 @@ func (s *server) GetTodo(ctx context.Context, req *gtodo.GetTodoRequest) (*gtodo
 
 	todo := &gtodo.Todo{
 		Title: "grpc_get_title",
-		Description: "grpc_get_description",
+		Doing: true,
 	}
 	res := &gtodo.GetTodoResponse{
 		Todo: todo,
@@ -38,14 +38,15 @@ func (s *server) CreateTodo(ctx context.Context, req *gtodo.CreateTodoRequest) (
 }
 
 func (s *server) ListTodos(ctx context.Context, req *gtodo.ListTodosRequest) (*gtodo.ListTodosResponse, error) {
-	todos := []&gtodo.Todo{
+	todos := []*gtodo.Todo{
 		{
 			Title: "grpc_list_title_1",
-			Description: "grpc_list_description_1",
+			Doing: false,
+		},
 		{
 			Title: "grpc_list_title_2",
-			Description: "grpc_list_description_2",
-		}
+			Doing: true,
+		},
 	}
 
 	res := &gtodo.ListTodosResponse{
