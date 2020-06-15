@@ -20,6 +20,7 @@ func main() {
 	defer conn.Close()
 	client := gtodo.NewTodoAPIClient(conn)
 
+
 	gres, err := client.ListTodos(context.Background(), greq)
 	if err != nil {
 		log.Fatalf("error")

@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"context"
 	"database/sql"
+	sqlhandler "./db"
 	gtodo "../proto"
 )
 
@@ -19,7 +20,7 @@ func (s *server) Hello() {
 type SqlHandler struct {
 	Conn	*sql.DB
 }
-
+/*
 func NewSqlHandler() *SqlHandler {
 	conn, err := sql.Open("mysql", "username:@tcp(db:3306)/DBname")
 	if err != nil {
@@ -29,9 +30,9 @@ func NewSqlHandler() *SqlHandler {
 	sqlHandler.Conn = conn
 	return sqlHandler
 }
+*/
 
-
-// TODO: use DB
+// TODO: Use DB
 func (s *server) GetTodo(ctx context.Context, req *gtodo.GetTodoRequest) (*gtodo.GetTodoResponse, error) {
 	todo := &gtodo.Todo{
 		Title: "grpc_get_title",
@@ -52,7 +53,6 @@ func (s *server) CreateTodo(ctx context.Context, req *gtodo.CreateTodoRequest) (
 }
 
 func (s *server) ListTodos(ctx context.Context, req *gtodo.ListTodosRequest) (*gtodo.ListTodosResponse, error) {
-	sqlhandler := NewSqlHandler()
 	rows, err := sqlhandler.Conn.Query("SELECT title, doing FROM todos")
 	if err != nil {
 		log.Fatal(err)
