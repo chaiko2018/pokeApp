@@ -10,6 +10,7 @@ export default function Navbar() {
       <Link to="/about">About</Link>
       <Link to="/pokesearch">PokeSearch</Link>
       <Link to="/todo">Chat</Link>
+      <Link to="/update">Update</Link>
     </div>
   );
 }

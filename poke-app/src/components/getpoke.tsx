@@ -41,6 +41,7 @@ export default function GetPoke() {
 
   const handleSearchPoke = (e: any) => {
     setPokename(tmpPoke);
+    setTmpPoke("");
   };
 
   return (

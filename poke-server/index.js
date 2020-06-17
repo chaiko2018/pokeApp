@@ -20,11 +20,22 @@ const typeDefs = gql`
     doing: Boolean
   }
 
+  type UploadedFileResponse {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+    url: String!
+  }
+
   type Query {
     books: [Book]
     getPoke(name: String): Pokemon
     getPokes: [Pokemon]
     todos: [Todo]
+  }
+
+  type Mutation {
+    singleUpLoad(file: Upload): UploadedFileResponse!
   }
 `;
 
@@ -93,6 +104,13 @@ const resolvers = {
     getPoke: (_parent, args) => {},
     getPokes: () => {},
     todos: () => todos, // TODO: to link databases system
+  },
+  Mutation: {
+    singleUpLoad: async (parent, { file }) => {
+      const { stream, filename, mimetype, encoding } = await file;
+      // Do Work
+      return { filename, mimetype, encoding, url: "" };
+    },
   },
 };
 
