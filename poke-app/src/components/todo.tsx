@@ -1,6 +1,12 @@
 import React, { useState, ChangeEvent } from "react";
-import { List, Checkbox, ListItem, ListItemText } from "@material-ui/core";
-import { useQuery, gql } from "@apollo/client";
+import {
+  List,
+  Checkbox,
+  ListItem,
+  ListItemText,
+  Input,
+} from "@material-ui/core";
+import { useQuery, gql, useMutation } from "@apollo/client";
 
 const GET_TODOS = gql`
   query GetTodos {
@@ -10,7 +16,14 @@ const GET_TODOS = gql`
     }
   }
 `;
-
+const UPDATE_TODO = gql`
+  mutation UpdateTodo($title: String!, $doing: String!) {
+    updateTodo(title: $title, doing: $doing) {
+      title
+      doing
+    }
+  }
+`;
 const INITIAL_TODO = {
   title: "Sample Todo",
   doing: false,
@@ -18,14 +31,16 @@ const INITIAL_TODO = {
 
 interface todoStruct {
   title: string;
-  doing: boolean;
+  doing: string;
 }
+/* frontend todo
 
 export default function Todo() {
   const [todos, setTodos] = useState([INITIAL_TODO]);
   const [todoTitle, setTodoTitle] = useState("");
 
   const { loading, error, data } = useQuery(GET_TODOS);
+  const [updateTodo] = useMutation(UPDATE_TODO);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
@@ -81,4 +96,45 @@ export default function Todo() {
       </List>
     </div>
   );
+}
+*/
+
+export default function Todo() {
+  const { loading, error, data } = useQuery(GET_TODOS);
+  const [
+    updateTodo,
+    { loading: mutationLoading, error: mutationError },
+  ] = useMutation(UPDATE_TODO);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
+  return data.todos.map(({ title, doing }: any) => {
+    let input: any;
+    return (
+      <div key={title}>
+        <p>
+          {title}: {doing}
+        </p>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            updateTodo({
+              variables: { title, doing: input.value },
+            });
+            input.value = "";
+          }}
+        >
+          <input
+            ref={(node) => {
+              input = node;
+            }}
+          />
+          <button type="submit">Update Todo</button>
+        </form>
+        {mutationLoading && <p>Loading...</p>}
+        {mutationError && <p>Error :(</p>}
+      </div>
+    );
+  });
 }

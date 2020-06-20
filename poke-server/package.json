@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node index.js",
+    "graphql": "node sample.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/federation": "^0.16.9",
+    "@apollo/gateway": "^0.16.9",
     "apollo-server": "^2.14.3",
     "graphql": "^15.1.0"
   }

@@ -1,14 +1,16 @@
-const { ApolloServer } = require("apollo-server");
-const { ApolloGateway } = require("@apollo/gateway");
+const { ApolloServer, gql } = require("apollo-server");
+const { buildFederatedSchema } = require("@apollo/federation");
 
-/*
+const port = 4001;
+const apiUrl = "http://localhost:4000/";
+
 const typeDefs = gql`
   type Book {
     title: String
     author: String
   }
 
-  type Pokemon {
+  type Pokemon @key(fields: "id") {
     id: ID
     number: String
     name: String
@@ -17,7 +19,7 @@ const typeDefs = gql`
     image: String
   }
 
-  type Todo {
+  type Todo @key(fields: "title") {
     title: String
     doing: String
   }
@@ -29,15 +31,11 @@ const typeDefs = gql`
     url: String!
   }
 
-  type Query {
+  extend type Query {
     books: [Book]
     getPoke(name: String): Pokemon
     getPokes: [Pokemon]
     todos: [Todo]
-  }
-
-  type Mutation {
-    singleUpLoad(file: Upload): UploadedFileResponse!
   }
 `;
 
@@ -76,7 +74,7 @@ const resolvers = {
   }
 }
 */
-/*
+
 const books = [
   {
     title: "Harry Potter and the Chamber of Secrets",
@@ -113,25 +111,13 @@ const resolvers = {
       // Do Work
       return { filename, mimetype, encoding, url: "" };
     },
-    updateTodo: (parent, args) => {
-      console.log(args);
-      const update
-    },
   },
 };
-*/
-
-const gateway = new ApolloGateway({
-  serviceList: [{ name: "sample", url: "http://localhost:4001" }],
-});
 
 const server = new ApolloServer({
-  //typeDefs,
-  //resolvers,
-  gateway,
-  subscriptions: false,
+  schema: buildFederatedSchema([{ typeDefs, resolvers }]),
 });
 
-server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url}`);
+server.listen({ port }).then(({ url }) => {
+  console.log(`sample service ready at ${url}`);
 });
