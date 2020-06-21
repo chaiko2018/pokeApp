@@ -1,32 +1,21 @@
 const { ApolloServer, gql } = require("apollo-server");
 const { buildFederatedSchema } = require("@apollo/federation");
 
-const port = 4001;
-const apiUrl = "http://localhost:4000/";
+const port = 4002;
 
 const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
-
-  type Todo @key(fields: "title") {
-    title: String
-    doing: String
-  }
-
-  type UploadedFileResponse {
-    filename: String!
-    mimetype: String!
-    encoding: String!
-    url: String!
+  type Pokemon @key(fields: "id") {
+    id: ID
+    number: String
+    name: String
+    maxHP: String
+    types: [String]
+    image: String
   }
 
   extend type Query {
-    books: [Book]
     getPoke(name: String): Pokemon
     getPokes: [Pokemon]
-    todos: [Todo]
   }
 `;
 
@@ -90,15 +79,8 @@ const todos = [
 
 const resolvers = {
   Query: {
-    books: () => books,
-    todos: () => todos, // TODO: to link databases system
-  },
-  Mutation: {
-    singleUpLoad: async (parent, { file }) => {
-      const { stream, filename, mimetype, encoding } = await file;
-      // Do Work
-      return { filename, mimetype, encoding, url: "" };
-    },
+    getPoke: (_parent, args) => {},
+    getPokes: () => {},
   },
 };
 

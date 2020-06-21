@@ -122,7 +122,10 @@ const resolvers = {
 */
 
 const gateway = new ApolloGateway({
-  serviceList: [{ name: "sample", url: "http://localhost:4001" }],
+  serviceList: [
+    { name: "sample", url: "http://localhost:4001" },
+    { name: "pokelist", url: "https://graphql-pokemon.now.sh/" },
+  ],
 });
 
 const server = new ApolloServer({
