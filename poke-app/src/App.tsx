@@ -12,6 +12,7 @@ import Home from "./components/home";
 import About from "./components/about";
 import GetPoke from "./components/getpoke";
 import Todo from "./components/todo";
+import PracReducer from "./components/pracReducer";
 //import UpdateFile from "./components/update";
 
 const client = new ApolloClient({
@@ -32,6 +33,7 @@ function App() {
           <Route exact path="/about" component={About} />
           <Route exact path="/pokesearch" component={GetPoke} />
           <Route exact path="/todo" component={Todo} />
+          <Route exact path="/prac" component={PracReducer} />
         </div>
       </BrowserRouter>
     </ApolloProvider>

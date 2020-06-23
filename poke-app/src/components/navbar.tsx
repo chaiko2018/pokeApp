@@ -11,6 +11,7 @@ export default function Navbar() {
       <Link to="/pokesearch">PokeSearch</Link>
       <Link to="/todo">Chat</Link>
       <Link to="/update">Update</Link>
+      <Link to="/prac">PracReducer</Link>
     </div>
   );
 }
