@@ -67,6 +67,7 @@ interface countAction {
 enum ActionType {
   ACTION_INCREMENT = "ACTION_INCREMENT",
   ACTION_DECREMENT = "ACTION_DECREMENT",
+  ACTION_CLEAR = "ACTION_CLEAR",
 }
 
 function reducer(state: countState, action: countAction) {
@@ -75,6 +76,8 @@ function reducer(state: countState, action: countAction) {
       return { count: state.count + 1 };
     case ActionType.ACTION_DECREMENT:
       return { count: state.count - 1 };
+    case ActionType.ACTION_CLEAR:
+      return initialState;
     default:
       throw new Error();
   }
@@ -91,6 +94,9 @@ export default function PracReducer() {
       </button>
       <button onClick={() => dispatch({ type: ActionType.ACTION_DECREMENT })}>
         -
+      </button>
+      <button onClick={() => dispatch({ type: ActionType.ACTION_CLEAR })}>
+        C
       </button>
     </>
   );
